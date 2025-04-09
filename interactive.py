@@ -22,9 +22,17 @@ import json
 import random
 # random.seed(0)
 from code.utils.agent import Agent
+from dotenv import load_dotenv
+import openai
+load_dotenv()
+
+openai.api_type = "azure"
+openai.api_base = os.environ['OPEN_AI_API_BASE']
+openai.api_version = os.environ['OPEN_AI_API_VERSION']
+openai.api_key = os.environ['OPEN_AI_API_KEY']
 
 
-openai_api_key = "Your-OpenAI-Api-Key"
+openai_api_key = os.environ['OPEN_AI_API_KEY']
 
 NAME_LIST=[
     "Affirmative side",
@@ -222,7 +230,7 @@ class Debate:
 
         self.print_answer()
 
-
+'''
 if __name__ == "__main__":
 
     current_script_path = os.path.abspath(__file__)
@@ -238,4 +246,4 @@ if __name__ == "__main__":
 
         debate = Debate(num_players=3, openai_api_key=openai_api_key, config=config, temperature=0, sleep_time=0)
         debate.run()
-
+'''

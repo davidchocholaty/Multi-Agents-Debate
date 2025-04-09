@@ -1,10 +1,19 @@
-import openai
 import backoff
 import time
 import random
-from openai.error import RateLimitError, APIError, ServiceUnavailableError, APIConnectionError
+from openai.error import RateLimitError, APIError, APIConnectionError
 from .openai_utils import OutOfQuotaException, AccessTerminatedException
 from .openai_utils import num_tokens_from_string, model2max_context
+
+import os
+from dotenv import load_dotenv
+import openai
+load_dotenv()
+
+openai.api_type = "azure"
+openai.api_base = os.environ['OPEN_AI_API_BASE']
+openai.api_version = os.environ['OPEN_AI_API_VERSION']
+openai.api_key = os.environ['OPEN_AI_API_KEY']
 
 support_models = ['gpt-3.5-turbo', 'gpt-3.5-turbo-0301', 'gpt-4', 'gpt-4-0314']
 
@@ -24,7 +33,7 @@ class Agent:
         self.memory_lst = []
         self.sleep_time = sleep_time
 
-    @backoff.on_exception(backoff.expo, (RateLimitError, APIError, ServiceUnavailableError, APIConnectionError), max_tries=20)
+    @backoff.on_exception(backoff.expo, (RateLimitError, APIError, APIConnectionError), max_tries=20)
     def query(self, messages: "list[dict]", max_tokens: int, api_key: str, temperature: float) -> str:
         """make a query
 
@@ -46,12 +55,20 @@ class Agent:
         try:
             if self.model_name in support_models:
                 response = openai.ChatCompletion.create(
+                    engine="gpt-35-turbo",
+                    # engine="gpt-4",
+                    messages=messages,
+                    temperature=temperature,
+                    max_tokens=max_tokens,
+                )
+                '''
+                response = openai.ChatCompletion.create(
                     model=self.model_name,
                     messages=messages,
                     temperature=temperature,
                     max_tokens=max_tokens,
                     api_key=api_key,
-                )
+                )'''
                 gen = response['choices'][0]['message']['content']
             return gen
 
