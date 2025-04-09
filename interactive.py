@@ -230,6 +230,8 @@ class Debate:
 
         self.print_answer()
 
+        return self.config["debate_answer"]
+
 '''
 if __name__ == "__main__":
 
