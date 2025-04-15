@@ -4,6 +4,7 @@ import json
 import pickle
 import sys
 import os
+import re
 # import random
 import argparse
 import numpy as np
@@ -41,19 +42,51 @@ def main(args, dataset, test_samples):
 
         for test_sample in tqdm(test_samples):
             try:
-                # TODO
                 config = json.load(open(f"{MAD_path}/code/utils/config4all.json", "r"))
                 config['debate_topic'] = test_sample["question"]
 
                 debate = Debate(num_players=3, openai_api_key=openai_api_key, config=config, temperature=0, sleep_time=0)
                 result = debate.run()
 
+                if dataset == "SQA":
+                    if re.search(r'\b(no|No|NO)\.?\b', result):
+                        result = "no"
+                    elif re.search(r'\b(yes|Yes|YES)\.?\b', result):
+                        result = "yes"
+
+                elif dataset == "ECQA":
+                    match = re.search(r'\(([A-E])\)', result)
+
+                    if match:
+                        letter = match.group(1)
+                        result = letter
+                    
+                elif dataset == "Aqua":
+                    match = re.search(r'\(([A-E])\)', result)
+
+                    if match:
+                        letter = match.group(1)
+                        result = letter 
+
+                elif dataset == "ANLI":
+                    match = re.search(r'\((e|c|n|contradiction|neutral|entailment)\)', result, re.IGNORECASE)
+
+                    if match:
+                        letter = match.group(1)
+                        result = letter
+                        
+                elif dataset == "DateUnderstanding":
+                    match = re.search(r'\(([A-E])\)', result)
+
+                    if match:
+                        letter = match.group(1)
+                        result = letter
+
                 print("RESULT: ", result)
 
                 if result == test_sample["answer"]:
                     num_correct += 1
                 else:
-                    # TODO invalid answer jestli nezkusit znova
                     if dataset == "SQA" and result not in ['yes', 'no']:
                         invalid_answer += 1
                     elif dataset == "GSM8k" and not result.isnumeric():
