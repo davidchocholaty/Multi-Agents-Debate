@@ -35,7 +35,10 @@ class StrategyQA:
         return samples
 
     def get_test_samples(self):
-        return self.get_samples(self.dev_path)
+        # return self.get_samples(self.dev_path)
+        samples = self.get_samples(self.dev_path)
+        random.shuffle(samples)
+        return samples
 
 
 class GSM8k:
@@ -79,7 +82,10 @@ class GSM8k:
         return samples
 
     def get_test_samples(self):
-        return self.get_samples(self.test_path)
+        # return self.get_samples(self.test_path)
+        samples = self.get_samples(self.test_path)
+        random.shuffle(samples)
+        return samples
 
 
 class Aqua:
@@ -105,7 +111,10 @@ class Aqua:
         return samples
 
     def get_test_samples(self):
-        return self.get_samples(self.test_path)
+        # return self.get_samples(self.test_path)
+        samples = self.get_samples(self.test_path)
+        random.shuffle(samples)
+        return samples
 
 
 class ECQA:
@@ -144,7 +153,10 @@ class ECQA:
         return samples
 
     def get_test_samples(self):
-        return self.get_samples(self.test_path)
+        # return self.get_samples(self.test_path)
+        samples = self.get_samples(self.test_path)
+        random.shuffle(samples)
+        return samples
 
 
 class ANLI:
@@ -174,7 +186,10 @@ class ANLI:
         return samples
 
     def get_test_samples(self):
-        return self.get_samples(self.test_path)
+        # return self.get_samples(self.test_path)
+        samples = self.get_samples(self.test_path)
+        random.shuffle(samples)
+        return samples
 
 
 class DateUnderstanding:
@@ -224,4 +239,7 @@ class DateUnderstanding:
         return samples
 
     def get_test_samples(self):
-        return self.get_samples(self.test_path)
+        # return self.get_samples(self.test_path)
+        samples = self.get_samples(self.test_path)
+        random.shuffle(samples)
+        return samples
