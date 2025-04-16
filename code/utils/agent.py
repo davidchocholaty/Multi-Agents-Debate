@@ -56,7 +56,7 @@ class Agent:
             if self.model_name in support_models:
                 response = openai.ChatCompletion.create(
                     # engine="gpt-35-turbo",
-                    engine="gpt-4",
+                    engine="gpt-4o",
                     messages=messages,
                     temperature=temperature,
                     max_tokens=max_tokens,
