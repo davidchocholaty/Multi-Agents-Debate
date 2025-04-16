@@ -50,7 +50,7 @@ def main(args, dataset, test_samples):
                 print(result)
 
                 if dataset == "SQA":
-                    matches = re.findall(r'\b(yes|no)\.?\b', result, re.IGNORECASE)
+                    matches = re.findall(r'\b(yes|no)\b', result, re.IGNORECASE)
                     if matches:
                         result = matches[-1].lower()
 
