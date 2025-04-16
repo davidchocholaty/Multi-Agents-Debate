@@ -50,37 +50,40 @@ def main(args, dataset, test_samples):
                 print(result)
 
                 if dataset == "SQA":
-                    if re.search(r'\b(no|No|NO)\.?\b', result):
-                        result = "no"
-                    elif re.search(r'\b(yes|Yes|YES)\.?\b', result):
-                        result = "yes"
+                    matches = re.findall(r'\b(yes|no)\.?\b', result, re.IGNORECASE)
+                    if matches:
+                        result = matches[-1].lower()
 
                 elif dataset == "ECQA":
-                    match = re.search(r'\(([A-E])\)', result)
+                    matches = re.findall(r'\(([A-E])\)', result)
 
-                    if match:
-                        letter = match.group(1)
+                    if matches:
+                        letter = matches[-1]
                         result = letter
-                    
-                elif dataset == "Aqua":
-                    match = re.search(r'\(([A-E])\)', result)
 
-                    if match:
-                        letter = match.group(1)
-                        result = letter 
+                elif dataset == "Aqua":
+                    matches = re.findall(r'\(([A-E])\)', result)
+
+                    if matches:
+                        letter = matches[-1]
+                        result = letter
 
                 elif dataset == "ANLI":
-                    match = re.search(r'\((e|c|n|contradiction|neutral|entailment)\)', result, re.IGNORECASE)
+                    matches = re.findall(
+                        r'\((e|c|n|contradiction|neutral|entailment)\)',
+                        result,
+                        re.IGNORECASE,
+                    )
 
-                    if match:
-                        letter = match.group(1)
+                    if matches:
+                        letter = matches[-1][0].lower()
                         result = letter
-                        
-                elif dataset == "DateUnderstanding":
-                    match = re.search(r'\(([A-E])\)', result)
 
-                    if match:
-                        letter = match.group(1)
+                elif dataset == "DateUnderstanding":
+                    matches = re.findall(r'\(([A-E])\)', result)
+
+                    if matches:
+                        letter = matches[-1]
                         result = letter
 
                 print("RESULT: ", result)
