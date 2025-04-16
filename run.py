@@ -119,9 +119,8 @@ def main(args, dataset, test_samples):
                     ]:
                         invalid_answer += 1
             except Exception as e:
-                # print(f"Exception during simulation: {e}.", file=sys.stderr)
-                # num_error += 1
-                raise
+                print(f"Exception during simulation: {e}.", file=sys.stderr)
+                num_error += 1
 
             # TODO nekde si asi logovat ty vysledky, ta je to pak dohledatelny
 

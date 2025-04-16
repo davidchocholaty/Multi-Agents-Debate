@@ -215,10 +215,29 @@ class Debate:
                 self.neg_ans = self.negative.ask()
                 self.negative.add_memory(self.neg_ans)
 
-                self.moderator.add_event(self.config['moderator_prompt'].replace('##aff_ans##', self.aff_ans).replace('##neg_ans##', self.neg_ans).replace('##round##', self.round_dct(round+2)))
+                # Add event to moderator
+                self.moderator.add_event(
+                    self.config['moderator_prompt']
+                        .replace('##aff_ans##', self.aff_ans)
+                        .replace('##neg_ans##', self.neg_ans)
+                        .replace('##round##', 'first')
+                )
+
+                # Get moderator answer
                 self.mod_ans = self.moderator.ask()
                 self.moderator.add_memory(self.mod_ans)
-                self.mod_ans = eval(self.mod_ans)
+
+                # Extract the first JSON block from the response safely
+                match = re.search(r'{.*}', self.mod_ans, re.DOTALL)
+                if match:
+                    try:
+                        self.mod_ans = json.loads(match.group())
+                    except json.JSONDecodeError as e:
+                        print("JSON decode error:", e)
+                        self.mod_ans = {}
+                else:
+                    print("No valid JSON found.")
+                    self.mod_ans = {}
 
         if self.mod_ans["debate_answer"] != '':
             self.config.update(self.mod_ans)
