@@ -19,6 +19,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import os
 import json
+import re
 import random
 # random.seed(0)
 from code.utils.agent import Agent
@@ -57,7 +58,8 @@ class DebatePlayer(Agent):
 
 class Debate:
     def __init__(self,
-            model_name: str='gpt-3.5-turbo', 
+            # model_name: str='gpt-3.5-turbo', 
+            model_name: str='gpt-4o',
             temperature: float=0, 
             num_players: int=3, 
             openai_api_key: str=None,
@@ -125,10 +127,29 @@ class Debate:
         self.neg_ans = self.negative.ask()
         self.negative.add_memory(self.neg_ans)
 
-        self.moderator.add_event(self.config['moderator_prompt'].replace('##aff_ans##', self.aff_ans).replace('##neg_ans##', self.neg_ans).replace('##round##', 'first'))
+        # Add event to moderator
+        self.moderator.add_event(
+            self.config['moderator_prompt']
+                .replace('##aff_ans##', self.aff_ans)
+                .replace('##neg_ans##', self.neg_ans)
+                .replace('##round##', 'first')
+        )
+
+        # Get moderator answer
         self.mod_ans = self.moderator.ask()
         self.moderator.add_memory(self.mod_ans)
-        self.mod_ans = eval(self.mod_ans)
+
+        # Extract the first JSON block from the response safely
+        match = re.search(r'{.*}', self.mod_ans, re.DOTALL)
+        if match:
+            try:
+                self.mod_ans = json.loads(match.group())
+            except json.JSONDecodeError as e:
+                print("JSON decode error:", e)
+                self.mod_ans = {}
+        else:
+            print("No valid JSON found.")
+            self.mod_ans = {}
 
     def round_dct(self, num: int):
         dct = {

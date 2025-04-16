@@ -2,10 +2,12 @@ import tiktoken
 
 
 model2max_context = {
+    "gpt-4o": 16384,
     "gpt-4": 7900,
     "gpt-4-0314": 7900,
-    "gpt-3.5-turbo-0301": 3900,
+    "gpt-4-turbo": 128000,
     "gpt-3.5-turbo": 3900,
+    "gpt-3.5-turbo-0301": 3900,
     "text-davinci-003": 4096,
     "text-davinci-002": 4096,
 }
@@ -38,7 +40,8 @@ class AccessTerminatedException(Exception):
 
 def num_tokens_from_string(string: str, model_name: str) -> int:
     """Returns the number of tokens in a text string."""
-    encoding = tiktoken.encoding_for_model(model_name)
+    # encoding = tiktoken.encoding_for_model(model_name)
+    encoding = tiktoken.get_encoding("o200k_base")
     num_tokens = len(encoding.encode(string))
     return num_tokens
 

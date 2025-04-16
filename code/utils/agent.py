@@ -15,7 +15,7 @@ openai.api_base = os.environ['OPEN_AI_API_BASE']
 openai.api_version = os.environ['OPEN_AI_API_VERSION']
 openai.api_key = os.environ['OPEN_AI_API_KEY']
 
-support_models = ['gpt-3.5-turbo', 'gpt-3.5-turbo-0301', 'gpt-4', 'gpt-4-0314']
+support_models = ['gpt-3.5-turbo', 'gpt-3.5-turbo-0301', 'gpt-4', 'gpt-4-0314', 'gpt-4o']
 
 class Agent:
     def __init__(self, model_name: str, name: str, temperature: float, sleep_time: float=0) -> None:

@@ -45,8 +45,9 @@ def main(args, dataset, test_samples):
                 config = json.load(open(f"{MAD_path}/code/utils/config4all.json", "r"))
                 config['debate_topic'] = test_sample["question"]
 
-                debate = Debate(num_players=3, openai_api_key=openai_api_key, config=config, temperature=0, sleep_time=0)
+                debate = Debate(model_name='gpt-4o', num_players=3, openai_api_key=openai_api_key, config=config, temperature=0, sleep_time=0)
                 result = debate.run()
+                print(result)
 
                 if dataset == "SQA":
                     if re.search(r'\b(no|No|NO)\.?\b', result):
@@ -118,8 +119,9 @@ def main(args, dataset, test_samples):
                     ]:
                         invalid_answer += 1
             except Exception as e:
-                print(f"Exception during simulation: {e}.", file=sys.stderr)
-                num_error += 1
+                # print(f"Exception during simulation: {e}.", file=sys.stderr)
+                # num_error += 1
+                raise
 
             # TODO nekde si asi logovat ty vysledky, ta je to pak dohledatelny
 
