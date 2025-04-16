@@ -55,14 +55,14 @@ def main(args, dataset, test_samples):
                         result = matches[-1].lower()
 
                 elif dataset == "ECQA":
-                    matches = re.findall(r'\(([A-E])\)', result)
+                    matches = re.findall(r'\b[A-E]\b', result)
 
                     if matches:
                         letter = matches[-1]
                         result = letter
 
                 elif dataset == "Aqua":
-                    matches = re.findall(r'\(([A-E])\)', result)
+                    matches = re.findall(r'\b[A-E]\b', result)
 
                     if matches:
                         letter = matches[-1]
@@ -70,7 +70,7 @@ def main(args, dataset, test_samples):
 
                 elif dataset == "ANLI":
                     matches = re.findall(
-                        r'\((e|c|n|contradiction|neutral|entailment)\)',
+                        r'\b(e|c|n|contradiction|neutral|entailment)\b',
                         result,
                         re.IGNORECASE,
                     )
@@ -80,7 +80,7 @@ def main(args, dataset, test_samples):
                         result = letter
 
                 elif dataset == "DateUnderstanding":
-                    matches = re.findall(r'\(([A-E])\)', result)
+                    matches = re.findall(r'\b[A-E]\b', result)
 
                     if matches:
                         letter = matches[-1]
