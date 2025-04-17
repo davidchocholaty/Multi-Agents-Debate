@@ -125,8 +125,6 @@ def main(args, dataset, test_samples):
                 print(f"Exception during simulation: {e}.", file=sys.stderr)
                 num_error += 1
 
-            # TODO nekde si asi logovat ty vysledky, ta je to pak dohledatelny
-
         accuracy = num_correct / len(test_samples)
         print(f"Accuracy: {accuracy}")
 
@@ -134,8 +132,6 @@ def main(args, dataset, test_samples):
 
     mean_accuracy = np.mean(accuracies)
     std_accuracy = np.std(accuracies)
-
-    # TODO ukladat accuracies a mean accuracy s std_accuracy
 
     print(f"Accuracy: {mean_accuracy:.4f} ± {std_accuracy:.4f}")
     print(f"Num error: {num_error}")
