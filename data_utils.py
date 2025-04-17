@@ -10,7 +10,8 @@ import string
 import pandas
 
 # random.seed(1234)
-random.seed(0)
+# random.seed(0)
+random.seed(9999)
 
 
 class StrategyQA:
